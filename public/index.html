@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المدونة الفكرية والمكتبة الرقمية | مسافر عبر الزمن</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- PDF.js Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Arabic"', 'sans-serif'],
+          },
+          colors: {
+            editorial: {
+              ivory: '#FAF8F5',
+              darkbg: '#121316',
+              carddark: '#1C1D21',
+              accent: '#B45309',
+              gold: '#D97706',
+              carbon: '#18181B',
+              muted: '#71717A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+    .prose-editorial p { margin-bottom: 1.25rem; line-height: 1.85; font-size: 1.125rem; }
+    .prose-editorial h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #b45309; }
+    .dark .prose-editorial h2 { color: #f59e0b; }
+    .prose-editorial h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+    .prose-editorial blockquote {
+      border-right: 4px solid #D97706;
+      padding-right: 1.25rem;
+      font-style: italic;
+      color: #92400E;
+      margin: 1.5rem 0;
+      background: rgba(217, 119, 6, 0.05);
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-radius: 0 8px 8px 0;
+    }
+    .dark .prose-editorial blockquote {
+      color: #FBBF24;
+      background: rgba(217, 119, 6, 0.1);
+    }
+    .default-book-cover {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(217, 119, 6, 0.3);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 4px 0 10px rgba(0,0,0,0.5), -5px 5px 15px rgba(0,0,0,0.3);
+    }
+    .default-book-cover::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0; width: 14px;
+      background: linear-gradient(to left, rgba(0,0,0,0.45), transparent);
+      border-left: 1px solid rgba(255,255,255,0.12);
+    }
+    .pdf-night-mode {
+      filter: invert(0.92) hue-rotate(180deg) brightness(0.95) contrast(1.1);
+    }
+    [contenteditable]:empty:before {
+      content: attr(data-placeholder);
+      color: #A1A1AA;
+      pointer-events: none;
+      display: block;
+    }
+  </style>
+</head>
+<body class="bg-editorial-ivory dark:bg-editorial-darkbg text-zinc-800 dark:text-zinc-100 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- READING PROGRESS BAR -->
+  <div id="readingProgressBar" class="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 z-50 transform origin-left scale-x-0 transition-transform duration-150"></div>
+
+  <!-- TOP HEADER WITH ARTISTIC LOGO -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/85 dark:bg-editorial-darkbg/85 border-b border-zinc-200/80 dark:border-zinc-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Artistic Logo -->
+      <a href="#home" onclick="switchTab('home')" class="flex items-center gap-3.5 group">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-amber-100 flex items-center justify-center shadow-md group-hover:scale-105 group-hover:shadow-amber-500/20 transition-all duration-300 border border-amber-400/30">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" opacity="0.35"/>
+            <path d="M12 6l4 8-4 4-4-4 4-8z" fill="currentColor" fill-opacity="0.25"/>
+            <path d="M12 6l2 4-2 6-2-6 2-4z" stroke="currentColor"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <span class="block font-bold text-lg tracking-tight text-zinc-900 dark:text-white group-hover:text-amber-600 transition-colors">مسافر عبر الزمن</span>
+          <span class="block text-xs text-zinc-500 dark:text-zinc-400 font-medium">مدونة الرأي والمكتبة الفكرية</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-1 bg-zinc-100/70 dark:bg-zinc-800/60 p-1.5 rounded-full border border-zinc-200/50 dark:border-zinc-700/50 text-sm font-medium">
+        <button onclick="switchTab('home')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-amber-700 dark:text-amber-400 bg-white dark:bg-zinc-700 shadow-sm" data-tab="home">الرئيسية</button>
+        <button onclick="switchTab('articles')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white" data-tab="articles">المقالات</button>
+        <button onclick="switchTab('thoughts')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white" data-tab="thoughts">الخواطر</button>
+        <button onclick="switchTab('library')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-1.5" data-tab="library">
+          <span>📚</span> المكتبة
+        </button>
+        <button onclick="switchTab('videos')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white" data-tab="videos">المكتبة المرئية</button>
+        <button onclick="switchTab('about')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white" data-tab="about">من أنا</button>
+      </nav>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button onclick="toggleDarkMode()" class="p-2.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 transition" title="تبديل الوضع">
+          <svg id="themeIconSun" class="w-5 h-5 hidden dark:block text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+          <svg id="themeIconMoon" class="w-5 h-5 block dark:hidden text-zinc-700" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+        </button>
+
+        <button onclick="openAdminModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-zinc-900 text-white dark:bg-amber-600 hover:bg-zinc-800 dark:hover:bg-amber-500 shadow-sm transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          <span class="hidden sm:inline">لوحة التحكم</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section class="relative border-b border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300/40 mb-3">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+            فضاء للكتابة والتأمل والتوثيق
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white leading-tight">
+            حين تصبح الكلمة مساحة للبصيرة، لا مجرد صوت عابر.
+          </h1>
+          <p class="mt-3 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 font-light">
+            مساحة شخصية للمقالات الفكرية، والمكتبة الرقمية للكتب والوثائق والدراسات المتاحة للقراءة والتحميل المباشر.
+          </p>
+        </div>
+
+        <div class="w-full md:w-80">
+          <div class="relative">
+            <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="ابحث في المقالات والمكتبة..." class="w-full px-4 py-3 pr-11 rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition shadow-sm">
+            <svg class="w-5 h-5 absolute right-3.5 top-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+
+    <!-- TAB 1: HOME -->
+    <div id="tab-home" class="tab-pane space-y-16">
+      <section>
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">أحدث المنشورات</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="prevSlide()" class="p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+              <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button onclick="nextSlide()" class="p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="relative overflow-hidden rounded-3xl bg-zinc-900 text-white min-h-[360px] shadow-xl">
+          <div id="carouselContainer" class="flex transition-transform duration-500 ease-out h-full"></div>
+          <div id="carouselDots" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10"></div>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div id="featuredArticleBox" class="lg:col-span-2"></div>
+        <div class="bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-700/60 mb-5">
+              <h3 class="font-bold text-lg text-zinc-900 dark:text-white flex items-center gap-2">
+                <span class="text-amber-500">✦</span> شذرات وخواطر
+              </h3>
+              <button onclick="switchTab('thoughts')" class="text-xs font-semibold text-amber-600 dark:text-amber-400 hover:underline">عرض الكل</button>
+            </div>
+            <div id="homeThoughtsList" class="space-y-4"></div>
+          </div>
+          <button onclick="switchTab('thoughts')" class="mt-6 w-full py-2.5 rounded-xl border border-amber-500/30 text-amber-600 dark:text-amber-400 font-medium text-sm hover:bg-amber-50 dark:hover:bg-amber-950/30 transition text-center">
+            تصفح كل الخواطر
+          </button>
+        </div>
+      </section>
+
+      <!-- Library Preview on Home -->
+      <section class="bg-gradient-to-r from-amber-900/10 via-zinc-100 dark:via-zinc-800 to-amber-900/10 border border-amber-500/20 dark:border-zinc-700 p-8 rounded-3xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+              <span>📚</span> روائع المكتبة والوثائق الرقمية
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">كتب، أوراق بحثية، وأدلة فكرية وتقنية جاهزة للقراءة والتحميل المباشر</p>
+          </div>
+          <button onclick="switchTab('library')" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow transition w-max">
+            دخول المكتبة الكاملة &larr;
+          </button>
+        </div>
+        <div id="homeLibraryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+      </section>
+
+      <section>
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">شبكة المقالات</h2>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">مقالات وقراءات رأي مفصلة وموثقة</p>
+          </div>
+          <button onclick="switchTab('articles')" class="text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline">كل المقالات &larr;</button>
+        </div>
+        <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+      </section>
+    </div>
+
+    <!-- TAB 2: ARTICLES -->
+    <div id="tab-articles" class="tab-pane hidden space-y-8">
+      <div class="border-b border-zinc-200 dark:border-zinc-800 pb-5">
+        <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">المقالات الفكرية</h2>
+        <p class="text-zinc-500 dark:text-zinc-400 mt-1">قراءات نقدية، مقالات رأي، وتأملات في الفلسفة والمجتمع والتقنية.</p>
+      </div>
+      <div id="allArticlesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </div>
+
+    <!-- TAB 3: THOUGHTS -->
+    <div id="tab-thoughts" class="tab-pane hidden space-y-8">
+      <div class="border-b border-zinc-200 dark:border-zinc-800 pb-5">
+        <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">شذرات وخواطر</h2>
+        <p class="text-zinc-500 dark:text-zinc-400 mt-1">ومضات سريعة واقتباسات قصيرة مركزة في بطاقات أنيقة.</p>
+      </div>
+      <div id="thoughtsTimeline" class="max-w-3xl mx-auto space-y-6"></div>
+    </div>
+
+    <!-- TAB 4: DIGITAL LIBRARY -->
+    <div id="tab-library" class="tab-pane hidden space-y-8">
+      <div class="border-b border-zinc-200 dark:border-zinc-800 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-3xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
+            <span>📚</span> المكتبة الرقمية والوثائق
+          </h2>
+          <p class="text-zinc-500 dark:text-zinc-400 mt-1 text-sm">
+            ملفات PDF وأبحاث ودراسات متخصصة مع القارئ المدمج عالي الدقة وعدادات القراءة والتنزيل.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-2xl border border-zinc-200 dark:border-zinc-700 w-max self-start sm:self-auto">
+          <button onclick="setLibraryView('cards')" id="libBtnCards" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition bg-white dark:bg-zinc-700 shadow text-amber-600 dark:text-amber-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            <span>عرض بطاقات</span>
+          </button>
+          <button onclick="setLibraryView('table')" id="libBtnTable" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition text-zinc-600 dark:text-zinc-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span>عرض جدول</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Category Filter Pills -->
+      <div id="libraryCategoryPills" class="flex flex-wrap items-center gap-2 pt-1"></div>
+
+      <div id="libraryCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+      <div id="libraryTableContainer" class="hidden overflow-x-auto bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl shadow-sm">
+        <table class="w-full text-right border-collapse text-sm">
+          <thead>
+            <tr class="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 text-xs font-semibold">
+              <th class="p-4 pr-6">الغلاف</th>
+              <th class="p-4">عنوان الملف / الوثيقة</th>
+              <th class="p-4">التصنيف</th>
+              <th class="p-4">الحجم والنوع</th>
+              <th class="p-4 text-center">مرات القراءة</th>
+              <th class="p-4 text-center">مرات التحميل</th>
+              <th class="p-4 pl-6 text-center">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="libraryTableBody" class="divide-y divide-zinc-100 dark:divide-zinc-700/60"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 5: VIDEOS -->
+    <div id="tab-videos" class="tab-pane hidden space-y-8">
+      <div class="border-b border-zinc-200 dark:border-zinc-800 pb-5">
+        <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">المكتبة المرئية</h2>
+        <p class="text-zinc-500 dark:text-zinc-400 mt-1">تسجيلات مرئية مختارة من يوتيوب مع هوامش فكرية.</p>
+      </div>
+      <div id="videosGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </div>
+
+    <!-- TAB 6: ABOUT -->
+    <div id="tab-about" class="tab-pane hidden max-w-4xl mx-auto space-y-12">
+      <div class="bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-center gap-8">
+        <div class="w-32 h-32 rounded-2xl bg-gradient-to-tr from-amber-600 to-amber-800 text-white flex items-center justify-center font-bold text-4xl shadow-md shrink-0 border border-amber-400/30">
+          <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 6l4 8-4 4-4-4 4-8z" fill="currentColor" fill-opacity="0.25"/>
+            <path d="M12 6l2 4-2 6-2-6 2-4z" stroke="currentColor"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="text-center md:text-right flex-1">
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 mb-2">كاتب وباحث مستقل</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-white">مسافر عبر الزمن</h2>
+          <p class="mt-2 text-zinc-600 dark:text-zinc-300 text-sm leading-relaxed">
+            مهتم بتشريح ظواهر العصر، قراءة التحولات الفكرية، وتوثيق المعرفة في مجالات الفكر والهندسة والعمران.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ADVANCED IN-BROWSER PDF VIEWER MODAL -->
+  <div id="pdfViewerModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex flex-col p-2 sm:p-5">
+    <div class="bg-white dark:bg-editorial-carddark w-full h-full rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-700 flex flex-col overflow-hidden">
+      
+      <div class="px-4 sm:px-6 py-3 border-b border-zinc-200 dark:border-zinc-700 flex flex-wrap items-center justify-between gap-3 bg-zinc-50 dark:bg-zinc-900">
+        <div class="flex items-center gap-3 min-w-0">
+          <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-600 text-white shrink-0">قارئ الوثائق</span>
+          <h3 id="pdfViewerTitle" class="font-bold text-sm sm:text-base text-zinc-900 dark:text-white truncate max-w-xs sm:max-w-md"></h3>
+        </div>
+
+        <div id="pdfControlsBar" class="flex items-center gap-1.5 bg-white dark:bg-zinc-800 p-1 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs">
+          <button onclick="changePdfPage(-1)" class="px-2.5 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition" title="الصفحة السابقة (السهم الأيمن)">◀ السابق</button>
+          <span class="px-2 font-mono text-zinc-600 dark:text-zinc-300">
+            <span id="pdfPageNum" class="font-bold text-amber-600">1</span> / <span id="pdfPageCount">1</span>
+          </span>
+          <button onclick="changePdfPage(1)" class="px-2.5 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition" title="الصفحة التالية (السهم الأيسر)">التالي ▶</button>
+          <span class="text-zinc-300 dark:text-zinc-600">|</span>
+          <button onclick="zoomPdf(0.2)" class="px-2.5 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition font-bold" title="تكبير">+</button>
+          <button onclick="zoomPdf(-0.2)" class="px-2.5 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition font-bold" title="تصغير">-</button>
+          <span class="text-zinc-300 dark:text-zinc-600">|</span>
+          <button onclick="togglePdfNightMode()" id="pdfNightModeBtn" class="px-2.5 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition text-[11px] font-semibold text-zinc-600 dark:text-zinc-300">🌙 ليلي</button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a id="pdfOpenNewTabBtn" href="#" target="_blank" class="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+            <span>نافذة مستقلة</span> ↗
+          </a>
+          <button onclick="triggerDownloadFromViewer()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-500 text-white transition shadow-sm">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span>تحميل</span>
+          </button>
+          <button onclick="closePdfViewer()" class="p-1.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="pdfViewerScrollArea" class="flex-grow w-full bg-zinc-200/90 dark:bg-zinc-950 overflow-auto flex items-start justify-center p-4 relative">
+        <div id="pdfLoadingState" class="absolute inset-0 flex flex-col items-center justify-center bg-zinc-100/90 dark:bg-zinc-900/90 z-10 space-y-3">
+          <div class="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
+          <p class="text-sm font-semibold text-zinc-700 dark:text-zinc-300">جارٍ قراءة صفحات الملف عبر المحرك الداخلي...</p>
+        </div>
+
+        <div id="pdfCanvasWrapper" class="shadow-2xl rounded-xl overflow-hidden bg-white max-w-full my-auto transition-all">
+          <canvas id="pdfRenderCanvas" class="block max-w-full h-auto"></canvas>
+        </div>
+
+        <iframe id="pdfFallbackFrame" class="w-full h-full border-0 hidden rounded-2xl bg-white shadow-inner" src=""></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE READING MODAL -->
+  <div id="articleModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white dark:bg-editorial-carddark max-w-3xl w-full rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-700 overflow-hidden my-auto max-h-[92vh] flex flex-col">
+      <div class="p-6 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+        <span id="modalCategory" class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300"></span>
+        <button onclick="closeArticleModal()" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="articleModalScrollArea" onscroll="updateReadingProgress()" class="p-6 sm:p-10 overflow-y-auto space-y-6">
+        <img id="modalCover" src="" class="w-full h-72 sm:h-96 object-cover rounded-2xl shadow-sm hidden">
+        <h1 id="modalTitle" class="text-2xl sm:text-4xl font-bold text-zinc-900 dark:text-white leading-tight"></h1>
+        <div class="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400 pb-4 border-b border-zinc-200 dark:border-zinc-700">
+          <span id="modalDate"></span> • <span id="modalReadTime"></span>
+        </div>
+        <div id="modalContent" class="prose-editorial text-zinc-700 dark:text-zinc-200"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN LOGIN MODAL -->
+  <div id="adminLoginModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-editorial-carddark max-w-md w-full rounded-3xl p-8 border border-zinc-200 dark:border-zinc-700 shadow-2xl">
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center font-bold text-2xl mx-auto mb-3">🔒</div>
+        <h3 class="text-2xl font-bold text-zinc-900 dark:text-white">دخول استوديو النشر</h3>
+      </div>
+      <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <input type="password" id="adminPasswordInput" required placeholder="كلمة المرور (admin123)" class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm">
+        <div id="loginError" class="text-rose-500 text-xs hidden">كلمة المرور غير صحيحة!</div>
+        <div class="flex items-center gap-3">
+          <button type="submit" class="flex-1 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm shadow">دخول</button>
+          <button type="button" onclick="closeAdminLoginModal()" class="px-5 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 text-sm">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FULLSCREEN ADMIN STUDIO WITH COMPLETE WYSIWYG & DUAL UPLOADS -->
+  <div id="adminStudio" class="fixed inset-0 z-50 bg-editorial-ivory dark:bg-editorial-darkbg hidden flex flex-col overflow-y-auto">
+    <header class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-20 px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+        <h2 class="text-xl font-bold text-zinc-900 dark:text-white">لوحة تحكم واستوديو النشر</h2>
+        <span id="autoSaveIndicator" class="text-xs text-zinc-400 font-medium mr-2"></span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="downloadFullBackup()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition">
+          <span>💾</span>
+          <span>نسخ احتياطي شامل (ZIP)</span>
+        </button>
+        <button onclick="closeAdminStudio()" class="px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">العودة للمدونة</button>
+      </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto w-full p-6 sm:p-10 flex-grow space-y-10">
+      
+      <!-- Type Switcher -->
+      <div class="flex items-center justify-center">
+        <div class="bg-zinc-200 dark:bg-zinc-800 p-1.5 rounded-2xl flex flex-wrap gap-1">
+          <button onclick="setEditorType('article')" id="btnTypeArticle" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-white dark:bg-zinc-700 shadow text-amber-600 dark:text-amber-400">مقال جديد</button>
+          <button onclick="setEditorType('library')" id="btnTypeLibrary" class="px-5 py-2.5 rounded-xl font-bold text-sm text-zinc-600 dark:text-zinc-300 flex items-center gap-1.5">
+            <span>📚</span> إضافة كتاب/وثيقة
+          </button>
+          <button onclick="setEditorType('thought')" id="btnTypeThought" class="px-5 py-2.5 rounded-xl font-bold text-sm text-zinc-600 dark:text-zinc-300">خاطرة</button>
+          <button onclick="setEditorType('video')" id="btnTypeVideo" class="px-5 py-2.5 rounded-xl font-bold text-sm text-zinc-600 dark:text-zinc-300">فيديو يوتيوب</button>
+        </div>
+      </div>
+
+      <!-- FORM: ARTICLE (WITH COMPLETE WYSIWYG TOOLBAR & LOCAL/URL COVER UPLOAD) -->
+      <div id="editorArticleSection" class="bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-700/60">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">✍️</span>
+            <h3 class="text-xl font-bold text-zinc-900 dark:text-white">إنشاء ونشر مقال مطول</h3>
+          </div>
+          <span class="text-xs text-amber-600 dark:text-amber-400 font-medium">✓ الحفظ التلقائي للمسودة مفعّل</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold mb-1.5 text-zinc-700 dark:text-zinc-300">عنوان المقال *</label>
+            <input type="text" id="articleTitleInput" oninput="triggerAutoSave()" placeholder="أدخل عنواناً للمقال..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1.5 text-zinc-700 dark:text-zinc-300">التصنيف</label>
+            <input type="text" id="articleCategoryInput" oninput="triggerAutoSave()" placeholder="مثلاً: فلسفة وفكر، أدب، تقنية..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold mb-1.5 text-zinc-700 dark:text-zinc-300">مقتطف موجز (يظهر في الواجهة الرئيسية)</label>
+          <input type="text" id="articleExcerptInput" oninput="triggerAutoSave()" placeholder="سطر أو سطرين يلخصان جوهر الفكرة..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+        </div>
+
+        <!-- DUAL COVER IMAGE UPLOAD (Local file from PC OR External URL) -->
+        <div class="border border-dashed border-amber-500/30 rounded-2xl p-4 bg-amber-50/20 dark:bg-amber-950/20 space-y-3">
+          <label class="block text-xs font-bold text-amber-900 dark:text-amber-300">صورة غلاف المقال (رفع محلي من جهازك أو رابط مباشر)</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <input type="file" id="coverFileInput" accept="image/*" class="w-full text-xs text-zinc-500 file:mr-0 file:ml-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-600 file:text-white hover:file:bg-amber-700">
+            </div>
+            <div>
+              <input type="text" id="coverUrlInput" placeholder="أو الصق رابط صورة خارجي (https://...)..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPLETE WYSIWYG TOOLBAR & EDITOR AREA -->
+        <div>
+          <label class="block text-xs font-semibold mb-2 text-zinc-700 dark:text-zinc-300">محتوى المقال وتنسيقاته (شاشة كاملة WYSIWYG)</label>
+          <div class="flex flex-wrap items-center gap-1.5 p-2.5 bg-zinc-100 dark:bg-zinc-800 rounded-t-2xl border border-zinc-200 dark:border-zinc-700 border-b-0">
+            <button type="button" onclick="formatDoc('bold')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs font-bold shadow-sm" title="عريض (Bold)">B</button>
+            <button type="button" onclick="formatDoc('italic')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs italic shadow-sm" title="مائل (Italic)">I</button>
+            <button type="button" onclick="formatDoc('underline')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs underline shadow-sm" title="تسطير">U</button>
+            <span class="text-zinc-300 dark:text-zinc-600">|</span>
+            <button type="button" onclick="formatDoc('formatBlock', '<h2>')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs font-bold shadow-sm">عنوان رئيسي H2</button>
+            <button type="button" onclick="formatDoc('formatBlock', '<h3>')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs font-semibold shadow-sm">عنوان فرعي H3</button>
+            <button type="button" onclick="formatDoc('formatBlock', '<blockquote>')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs shadow-sm" title="اقتباس مائل">اقتباس ❝</button>
+            <span class="text-zinc-300 dark:text-zinc-600">|</span>
+            <button type="button" onclick="formatDoc('insertUnorderedList')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs shadow-sm">• قائمة نقطية</button>
+            <button type="button" onclick="formatDoc('insertOrderedList')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs shadow-sm">1. قائمة مرقمة</button>
+            <span class="text-zinc-300 dark:text-zinc-600">|</span>
+            <button type="button" onclick="insertInlineImagePrompt()" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs shadow-sm flex items-center gap-1">🖼️ صورة داخل النص</button>
+            <button type="button" onclick="insertHyperlink()" class="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs shadow-sm flex items-center gap-1">🔗 رابط</button>
+            <button type="button" onclick="formatDoc('removeFormat')" class="px-2.5 py-1.5 rounded-lg bg-white dark:bg-zinc-700 hover:bg-zinc-200 text-xs text-rose-500 shadow-sm" title="إزالة التنسيق">🧹</button>
+          </div>
+          <div id="articleContentEditor" oninput="triggerAutoSave()" contenteditable="true" data-placeholder="اكتب أفكارك ومقالك هنا بكل سلاسة، واستخدم أزرار الشريط بالأعلى للتنسيق المباشر دون أكواد..." class="min-h-[260px] p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-b-2xl focus:outline-none prose-editorial text-zinc-800 dark:text-zinc-200"></div>
+        </div>
+
+        <button onclick="submitArticle()" class="w-full py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm shadow-md hover:shadow-lg transition">نشر المقال فوراً</button>
+      </div>
+
+      <!-- FORM: LIBRARY -->
+      <div id="editorLibrarySection" class="hidden bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+          <span>📚</span> إضافة ملف أو كتاب للمكتبة الرقمية
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" id="libTitleInput" required placeholder="عنوان الكتاب أو الوثيقة..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm">
+          <input type="text" id="libAuthorInput" placeholder="اسم المؤلف (افتراضي: م/ محمد بن عبدالحكيم الغبان)..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm">
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" id="libCategoryInput" placeholder="التصنيف (مثلاً: دراسات فكرية، تراث، هندسة)..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm">
+          <input type="text" id="libSizeInput" placeholder="الحجم والنوع (مثلاً: PDF • 3.2 MB)..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm">
+        </div>
+        <textarea id="libDescInput" rows="3" placeholder="نبذة تعريفية موجزة عن الوثيقة..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-sm"></textarea>
+
+        <div class="border border-dashed border-amber-500/40 rounded-2xl p-4 bg-amber-50/20 dark:bg-amber-950/20 space-y-2">
+          <label class="block text-xs font-bold text-amber-800 dark:text-amber-300">ملف الوثيقة (PDF أو غيرها من جهازك مباشرة)</label>
+          <input type="file" id="libDocFileInput" accept=".pdf,.doc,.docx" class="w-full text-xs file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-amber-600 file:text-white">
+          <input type="text" id="libDocUrlInput" placeholder="أو رابط ملف خارجي مباشر..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-zinc-800 border text-xs">
+        </div>
+
+        <div class="border border-dashed border-zinc-300 dark:border-zinc-700 rounded-2xl p-4 space-y-2">
+          <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">صورة الغلاف (اختياري - يولد النظام غلافاً تلقائياً عند عدم الاختيار)</label>
+          <input type="file" id="libCoverFileInput" accept="image/*" class="w-full text-xs file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-zinc-200 dark:file:bg-zinc-700">
+          <input type="text" id="libCoverUrlInput" placeholder="أو رابط صورة غلاف خارجية..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-zinc-800 border text-xs">
+        </div>
+
+        <button onclick="submitLibraryBook()" class="w-full py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm shadow">حفظ وإضافة الملف للمكتبة</button>
+      </div>
+
+      <!-- FORM: THOUGHT -->
+      <div id="editorThoughtSection" class="hidden bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white">نشر خاطرة</h3>
+        <textarea id="thoughtTextInput" rows="4" placeholder="اكتب شذرة فكرية..." class="w-full px-4 py-3 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border text-sm"></textarea>
+        <button onclick="submitThought()" class="w-full py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm">نشر الخاطرة</button>
+      </div>
+
+      <!-- FORM: VIDEO -->
+      <div id="editorVideoSection" class="hidden bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+        <h3 class="text-xl font-bold text-zinc-900 dark:text-white">إضافة فيديو يوتيوب</h3>
+        <input type="text" id="videoUrlInput" placeholder="رابط يوتيوب..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border text-sm">
+        <input type="text" id="videoTitleInput" placeholder="عنوان المقطع..." class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border text-sm">
+        <button onclick="submitVideo()" class="w-full py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm">إضافة الفيديو</button>
+      </div>
+
+      <!-- Content Manager -->
+      <div class="bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">إدارة وحذف محتويات الموقع والمكتبة</h3>
+        <div id="adminContentList" class="space-y-3"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-600 to-amber-800 text-white flex items-center justify-center font-bold">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 6l2 4-2 6-2-6 2-4z"/>
+          </svg>
+        </div>
+        <span>جميع الحقوق محفوظة © 2026 | مسافر عبر الزمن</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#home" onclick="switchTab('home')" class="hover:text-amber-600">الرئيسية</a>
+        <a href="#articles" onclick="switchTab('articles')" class="hover:text-amber-600">المقالات</a>
+        <a href="#library" onclick="switchTab('library')" class="hover:text-amber-600">المكتبة</a>
+        <a href="#videos" onclick="switchTab('videos')" class="hover:text-amber-600">المكتبة المرئية</a>
+        <a href="#about" onclick="switchTab('about')" class="hover:text-amber-600">من أنا</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // WYSIWYG Editor Commands
+    function formatDoc(cmd, val = null) {
+      document.execCommand(cmd, false, val);
+      document.getElementById('articleContentEditor').focus();
+      triggerAutoSave();
+    }
+    function insertInlineImagePrompt() {
+      const url = prompt('أدخل رابط الصورة لإدراجها داخل النص:');
+      if (url) formatDoc('insertImage', url);
+    }
+    function insertHyperlink() {
+      const url = prompt('أدخل الرابط الإلكتروني (URL):');
+      if (url) formatDoc('createLink', url);
+    }
+
+    let state = {
+      articles: [],
+      thoughts: [],
+      videos: [],
+      library: [],
+      likes: {},
+      comments: {},
+      currentArticleId: null,
+      currentLibraryItem: null,
+      selectedLibraryCategory: 'all',
+      libraryView: 'cards',
+      currentSlide: 0,
+      slideInterval: null,
+      adminToken: null
+    };
+
+    let currentPdfDoc = null;
+    let currentPdfPage = 1;
+    let currentPdfScale = 1.35;
+    let isPdfRendering = false;
+    let isPdfNightMode = false;
+    let autoSaveTimer = null;
+
+    function initTheme() {
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    function toggleDarkMode() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
+      }
+    }
+    initTheme();
+
+    async function loadData() {
+      try {
+        const res = await fetch('/api/content');
+        if (res.ok) {
+          const data = await res.json();
+          state.articles = data.articles || [];
+          state.thoughts = data.thoughts || [];
+          state.videos = data.videos || [];
+          state.library = data.library || [];
+          state.likes = data.likes || {};
+          state.comments = data.comments || {};
+        } else {
+          loadFromLocalStorage();
+        }
+      } catch (e) {
+        loadFromLocalStorage();
+      }
+      renderAll();
+      restoreDraft();
+    }
+
+    function loadFromLocalStorage() {
+      const getStored = (key, def) => {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : def;
+      };
+      state.articles = getStored('blog_articles', []);
+      state.thoughts = getStored('blog_thoughts', []);
+      state.videos = getStored('blog_videos', []);
+      state.library = getStored('blog_library', []);
+      state.likes = getStored('blog_likes', {});
+      state.comments = getStored('blog_comments', {});
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      const active = document.getElementById(`tab-${tabId}`);
+      if (active) active.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.className = "nav-btn px-4 py-1.5 rounded-full transition-all text-amber-700 dark:text-amber-400 bg-white dark:bg-zinc-700 shadow-sm flex items-center gap-1.5";
+        } else {
+          btn.className = "nav-btn px-4 py-1.5 rounded-full transition-all text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center gap-1.5";
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderAll() {
+      renderCarousel();
+      renderHomeFeatured();
+      renderHomeThoughts();
+      renderHomeLibrary();
+      renderArticlesGrid();
+      renderAllArticlesList();
+      renderThoughtsTimeline();
+      renderLibraryCategoryPills();
+      renderLibraryView();
+      renderVideos();
+      renderAdminContentList();
+    }
+
+    function generateDefaultCoverHtml(title, author) {
+      return `
+        <div class="w-full h-full default-book-cover flex flex-col justify-between p-6 text-white select-none">
+          <div class="flex items-center justify-between">
+            <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-xs font-bold">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6l2 4-2 6-2-6 2-4z"/></svg>
+            </span>
+            <span class="text-[10px] tracking-wider text-zinc-400 uppercase font-mono">وثيقة رقمية</span>
+          </div>
+          <div class="my-auto py-4">
+            <h4 class="font-bold text-base leading-snug line-clamp-3 text-amber-100">${title}</h4>
+            <p class="text-[11px] text-zinc-400 mt-2 truncate">${author || 'مسافر عبر الزمن'}</p>
+          </div>
+          <div class="pt-3 border-t border-zinc-700/60 flex items-center justify-between text-[10px] text-zinc-400">
+            <span>إصدار فكري</span>
+            <span>PDF</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLibraryCategoryPills() {
+      const container = document.getElementById('libraryCategoryPills');
+      if (!container) return;
+
+      const categories = ['all', ...new Set(state.library.map(b => b.category || 'عام'))];
+      container.innerHTML = categories.map(cat => {
+        const isSelected = state.selectedLibraryCategory === cat;
+        const label = cat === 'all' ? 'جميع الملفات' : cat;
+        return `
+          <button onclick="selectLibraryCategory('${cat}')" class="px-4 py-1.5 rounded-full text-xs font-semibold transition ${isSelected ? 'bg-amber-600 text-white shadow' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'}">
+            ${label}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectLibraryCategory(cat) {
+      state.selectedLibraryCategory = cat;
+      renderLibraryCategoryPills();
+      renderLibraryView();
+    }
+
+    function setLibraryView(view) {
+      state.libraryView = view;
+      const btnCards = document.getElementById('libBtnCards');
+      const btnTable = document.getElementById('libBtnTable');
+      const cardsBox = document.getElementById('libraryCardsContainer');
+      const tableBox = document.getElementById('libraryTableContainer');
+
+      if (view === 'cards') {
+        btnCards.className = "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition bg-white dark:bg-zinc-700 shadow text-amber-600 dark:text-amber-400";
+        btnTable.className = "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition text-zinc-600 dark:text-zinc-300";
+        cardsBox.classList.remove('hidden');
+        tableBox.classList.add('hidden');
+      } else {
+        btnTable.className = "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition bg-white dark:bg-zinc-700 shadow text-amber-600 dark:text-amber-400";
+        btnCards.className = "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition text-zinc-600 dark:text-zinc-300";
+        cardsBox.classList.add('hidden');
+        tableBox.classList.remove('hidden');
+      }
+      renderLibraryView();
+    }
+
+    function getFilteredLibrary() {
+      if (state.selectedLibraryCategory === 'all') return state.library;
+      return state.library.filter(b => (b.category || 'عام') === state.selectedLibraryCategory);
+    }
+
+    function renderLibraryView() {
+      renderLibraryCards();
+      renderLibraryTable();
+    }
+
+    function renderLibraryCards() {
+      const container = document.getElementById('libraryCardsContainer');
+      if (!container) return;
+      const items = getFilteredLibrary();
+
+      if (items.length === 0) {
+        container.innerHTML = `<div class="col-span-3 text-center py-12 text-zinc-400">لا توجد ملفات في هذا التصنيف.</div>`;
+        return;
+      }
+      container.innerHTML = items.map(book => {
+        const coverSnippet = book.coverUrl ? 
+          `<img src="${book.coverUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${book.title}">` :
+          generateDefaultCoverHtml(book.title, book.author);
+
+        return `
+          <div class="group bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+            <div>
+              <div class="h-60 overflow-hidden relative bg-zinc-900">
+                ${coverSnippet}
+                <span class="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-black/60 backdrop-blur-md text-amber-300 border border-white/10">
+                  ${book.category || 'عام'}
+                </span>
+              </div>
+              <div class="p-6">
+                <div class="text-[11px] text-zinc-400 mb-1">${book.author || 'الكاتب'}</div>
+                <h3 class="font-bold text-lg text-zinc-900 dark:text-white leading-snug group-hover:text-amber-600 transition-colors">${book.title}</h3>
+                <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">${book.description || ''}</p>
+                <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-700/60 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                  <span class="flex items-center gap-1.5">👁️ <strong>${book.readsCount || 0}</strong> قراءة</span>
+                  <span class="flex items-center gap-1.5">📥 <strong>${book.downloadsCount || 0}</strong> تحميل</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-700 font-mono">${book.fileSize || 'PDF'}</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-6 pt-0 grid grid-cols-2 gap-3">
+              <button onclick="openPdfViewer('${book.id}')" class="w-full py-2.5 rounded-xl font-bold text-xs bg-amber-600 hover:bg-amber-500 text-white shadow transition flex items-center justify-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span>قراءة مباشرة</span>
+              </button>
+              <button onclick="downloadLibraryFile('${book.id}')" class="w-full py-2.5 rounded-xl font-bold text-xs border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition flex items-center justify-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>تنزيل</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderLibraryTable() {
+      const tbody = document.getElementById('libraryTableBody');
+      if (!tbody) return;
+      const items = getFilteredLibrary();
+
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-zinc-400">لا توجد ملفات بعد.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = items.map(book => {
+        const thumbSnippet = book.coverUrl ?
+          `<img src="${book.coverUrl}" class="w-12 h-16 object-cover rounded-lg shadow-sm">` :
+          `<div class="w-12 h-16 default-book-cover rounded-lg flex items-center justify-center text-[10px] text-amber-300 font-bold">PDF</div>`;
+
+        return `
+          <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-750 transition">
+            <td class="p-4 pr-6">${thumbSnippet}</td>
+            <td class="p-4">
+              <span class="font-bold text-zinc-900 dark:text-white block">${book.title}</span>
+              <span class="text-xs text-zinc-400">${book.author || 'مسافر عبر الزمن'}</span>
+            </td>
+            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-700">${book.category || 'عام'}</span></td>
+            <td class="p-4 text-xs text-zinc-500 font-mono">${book.fileSize || 'PDF'}</td>
+            <td class="p-4 text-center font-semibold">${book.readsCount || 0}</td>
+            <td class="p-4 text-center font-semibold">${book.downloadsCount || 0}</td>
+            <td class="p-4 pl-6 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <button onclick="openPdfViewer('${book.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 text-white hover:bg-amber-500 transition">قراءة</button>
+                <button onclick="downloadLibraryFile('${book.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold border hover:bg-zinc-100 dark:hover:bg-zinc-700 transition">تحميل</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderHomeLibrary() {
+      const container = document.getElementById('homeLibraryGrid');
+      if (!container) return;
+      const items = state.library.slice(0, 3);
+      if (items.length === 0) {
+        container.innerHTML = `<p class="col-span-3 text-center text-xs text-zinc-400">لا توجد وثائق في المكتبة بعد.</p>`;
+        return;
+      }
+      container.innerHTML = items.map(book => `
+        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-4 rounded-2xl flex items-center gap-4 shadow-sm hover:shadow transition">
+          <div class="w-16 h-20 shrink-0 overflow-hidden rounded-xl bg-zinc-800">
+            ${book.coverUrl ? `<img src="${book.coverUrl}" class="w-full h-full object-cover">` : `<div class="w-full h-full default-book-cover flex items-center justify-center text-xs text-amber-300 font-bold">PDF</div>`}
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-sm text-zinc-900 dark:text-white truncate">${book.title}</h4>
+            <span class="text-xs text-zinc-400 block mt-0.5">${book.author || 'الكاتب'}</span>
+            <div class="flex items-center gap-3 text-[11px] text-zinc-500 mt-2">
+              <span>👁️ ${book.readsCount || 0}</span>
+              <span>📥 ${book.downloadsCount || 0}</span>
+            </div>
+          </div>
+          <button onclick="openPdfViewer('${book.id}')" class="p-2 rounded-xl bg-amber-600/10 text-amber-600 hover:bg-amber-600 hover:text-white transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function openPdfViewer(id) {
+      const book = state.library.find(b => b.id === id);
+      if (!book) return;
+      state.currentLibraryItem = book;
+
+      document.getElementById('pdfViewerTitle').textContent = book.title;
+      document.getElementById('pdfOpenNewTabBtn').href = book.fileUrl;
+      
+      const modal = document.getElementById('pdfViewerModal');
+      const loader = document.getElementById('pdfLoadingState');
+      const canvasWrapper = document.getElementById('pdfCanvasWrapper');
+      const fallbackFrame = document.getElementById('pdfFallbackFrame');
+      const controlsBar = document.getElementById('pdfControlsBar');
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      loader.classList.remove('hidden');
+      canvasWrapper.classList.add('hidden');
+      fallbackFrame.classList.add('hidden');
+      controlsBar.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/library/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, action: 'read' })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          book.readsCount = data.readsCount;
+        } else {
+          book.readsCount = (book.readsCount || 0) + 1;
+          localStorage.setItem('blog_library', JSON.stringify(state.library));
+        }
+      } catch (e) {
+        book.readsCount = (book.readsCount || 0) + 1;
+        localStorage.setItem('blog_library', JSON.stringify(state.library));
+      }
+      renderLibraryView();
+      renderHomeLibrary();
+
+      if (window.pdfjsLib) {
+        try {
+          const loadingTask = pdfjsLib.getDocument({
+            url: book.fileUrl,
+            withCredentials: false
+          });
+          currentPdfDoc = await loadingTask.promise;
+          document.getElementById('pdfPageCount').textContent = currentPdfDoc.numPages;
+          currentPdfPage = 1;
+          renderPdfPage(currentPdfPage);
+          loader.classList.add('hidden');
+          canvasWrapper.classList.remove('hidden');
+          return;
+        } catch (pdfErr) {
+          console.warn('PDF.js canvas render fallback:', pdfErr);
+        }
+      }
+
+      controlsBar.classList.add('hidden');
+      loader.classList.add('hidden');
+      fallbackFrame.classList.remove('hidden');
+      if (book.fileUrl.startsWith('http://') || book.fileUrl.startsWith('https://')) {
+        fallbackFrame.src = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(book.fileUrl)}`;
+      } else {
+        fallbackFrame.src = book.fileUrl;
+      }
+    }
+
+    function renderPdfPage(num) {
+      if (!currentPdfDoc) return;
+      isPdfRendering = true;
+      currentPdfDoc.getPage(num).then(page => {
+        const canvas = document.getElementById('pdfRenderCanvas');
+        const ctx = canvas.getContext('2d');
+        const viewport = page.getViewport({ scale: currentPdfScale });
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = { canvasContext: ctx, viewport: viewport };
+        const renderTask = page.render(renderContext);
+        renderTask.promise.then(() => {
+          isPdfRendering = false;
+          document.getElementById('pdfPageNum').textContent = num;
+        });
+      });
+    }
+
+    function changePdfPage(delta) {
+      if (!currentPdfDoc || isPdfRendering) return;
+      const target = currentPdfPage + delta;
+      if (target >= 1 && target <= currentPdfDoc.numPages) {
+        currentPdfPage = target;
+        renderPdfPage(currentPdfPage);
+      }
+    }
+
+    function zoomPdf(delta) {
+      if (!currentPdfDoc) return;
+      currentPdfScale = Math.max(0.6, Math.min(3.0, currentPdfScale + delta));
+      renderPdfPage(currentPdfPage);
+    }
+
+    function togglePdfNightMode() {
+      isPdfNightMode = !isPdfNightMode;
+      const canvasWrapper = document.getElementById('pdfCanvasWrapper');
+      const btn = document.getElementById('pdfNightModeBtn');
+      if (isPdfNightMode) {
+        canvasWrapper.classList.add('pdf-night-mode');
+        btn.textContent = '☀️ نهاري';
+        btn.className = "px-2.5 py-1 rounded-lg bg-amber-600 text-white font-bold transition text-[11px]";
+      } else {
+        canvasWrapper.classList.remove('pdf-night-mode');
+        btn.textContent = '🌙 ليلي';
+        btn.className = "px-2.5 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition text-[11px] font-semibold text-zinc-600 dark:text-zinc-300";
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('pdfViewerModal');
+      if (!modal || modal.classList.contains('hidden')) return;
+
+      if (e.key === 'ArrowLeft') {
+        changePdfPage(1);
+      } else if (e.key === 'ArrowRight') {
+        changePdfPage(-1);
+      } else if (e.key === 'Escape') {
+        closePdfViewer();
+      }
+    });
+
+    function closePdfViewer() {
+      document.getElementById('pdfViewerModal').classList.add('hidden');
+      document.getElementById('pdfFallbackFrame').src = '';
+      document.body.style.overflow = '';
+      state.currentLibraryItem = null;
+      currentPdfDoc = null;
+    }
+
+    async function downloadLibraryFile(id) {
+      const book = state.library.find(b => b.id === id);
+      if (!book) return;
+
+      try {
+        const res = await fetch('/api/library/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, action: 'download' })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          book.downloadsCount = data.downloadsCount;
+        } else {
+          book.downloadsCount = (book.downloadsCount || 0) + 1;
+          localStorage.setItem('blog_library', JSON.stringify(state.library));
+        }
+      } catch (e) {
+        book.downloadsCount = (book.downloadsCount || 0) + 1;
+        localStorage.setItem('blog_library', JSON.stringify(state.library));
+      }
+
+      renderLibraryView();
+      renderHomeLibrary();
+
+      const a = document.createElement('a');
+      a.href = book.fileUrl;
+      a.download = (book.title || 'document') + '.pdf';
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function triggerDownloadFromViewer() {
+      if (state.currentLibraryItem) {
+        downloadLibraryFile(state.currentLibraryItem.id);
+      }
+    }
+
+    function triggerAutoSave() {
+      const indicator = document.getElementById('autoSaveIndicator');
+      if (indicator) indicator.textContent = 'جارٍ الحفظ التلقائي...';
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(() => {
+        saveDraft();
+      }, 1500);
+    }
+
+    function saveDraft() {
+      const draft = {
+        title: document.getElementById('articleTitleInput').value,
+        category: document.getElementById('articleCategoryInput').value,
+        excerpt: document.getElementById('articleExcerptInput').value,
+        content: document.getElementById('articleContentEditor').innerHTML
+      };
+      localStorage.setItem('blog_article_draft', JSON.stringify(draft));
+      const indicator = document.getElementById('autoSaveIndicator');
+      if (indicator) indicator.textContent = 'تم حفظ المسودة تلقائياً ✓';
+    }
+
+    function restoreDraft() {
+      const saved = localStorage.getItem('blog_article_draft');
+      if (saved) {
+        try {
+          const d = JSON.parse(saved);
+          if (d.title || d.content) {
+            document.getElementById('articleTitleInput').value = d.title || '';
+            document.getElementById('articleCategoryInput').value = d.category || '';
+            document.getElementById('articleExcerptInput').value = d.excerpt || '';
+            document.getElementById('articleContentEditor').innerHTML = d.content || '';
+          }
+        } catch (e) {}
+      }
+    }
+
+    function downloadFullBackup() {
+      const token = state.adminToken || 'session_auth_token_secret';
+      window.open(`/api/admin/backup?token=${token}`, '_blank');
+    }
+
+    function updateReadingProgress() {
+      const scrollArea = document.getElementById('articleModalScrollArea');
+      const bar = document.getElementById('readingProgressBar');
+      if (!scrollArea || !bar) return;
+      const progress = scrollArea.scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
+      bar.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
+    }
+
+    function renderCarousel() {
+      const container = document.getElementById('carouselContainer');
+      const dots = document.getElementById('carouselDots');
+      if (!container) return;
+      const items = state.articles.slice(0, 4);
+      if (items.length === 0) {
+        container.innerHTML = `<div class="p-12 text-center w-full">لا توجد منشورات</div>`;
+        return;
+      }
+      container.innerHTML = items.map(art => `
+        <div class="min-w-full h-full relative cursor-pointer group" onclick="openArticleModal('${art.id}')">
+          <img src="${art.cover || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80'}" class="w-full h-[360px] object-cover filter brightness-50 group-hover:scale-105 transition duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8 sm:p-12">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/80 text-white w-max mb-3">${art.category || 'مقال'}</span>
+            <h2 class="text-2xl sm:text-4xl font-bold text-white max-w-3xl leading-snug">${art.title}</h2>
+          </div>
+        </div>
+      `).join('');
+      dots.innerHTML = items.map((_, i) => `<button onclick="goToSlide(${i})" class="w-2.5 h-2.5 rounded-full transition-all ${i === state.currentSlide ? 'bg-amber-500 w-7' : 'bg-white/50'}"></button>`).join('');
+      startSlideTimer(items.length);
+    }
+    function startSlideTimer(t) {
+      if (state.slideInterval) clearInterval(state.slideInterval);
+      if (t <= 1) return;
+      state.slideInterval = setInterval(() => { nextSlide(); }, 5000);
+    }
+    function goToSlide(idx) {
+      const total = Math.min(state.articles.length, 4);
+      if (total === 0) return;
+      state.currentSlide = (idx + total) % total;
+      const c = document.getElementById('carouselContainer');
+      if (c) c.style.transform = `translateX(${state.currentSlide * 100}%)`;
+    }
+    function nextSlide() { goToSlide(state.currentSlide + 1); }
+    function prevSlide() { goToSlide(state.currentSlide - 1); }
+
+    function renderHomeFeatured() {
+      const box = document.getElementById('featuredArticleBox');
+      if (!box) return;
+      const feat = state.articles[0];
+      if (!feat) { box.innerHTML = ''; return; }
+      box.innerHTML = `
+        <div onclick="openArticleModal('${feat.id}')" class="cursor-pointer group bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition">
+          <div class="h-64 sm:h-80 overflow-hidden">
+            <img src="${feat.cover || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-3 text-xs text-amber-600 dark:text-amber-400 font-semibold mb-2">
+              <span>★ مقالة الصدارة</span> • <span>${feat.category || 'عام'}</span>
+            </div>
+            <h3 class="text-2xl font-bold text-zinc-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">${feat.title}</h3>
+            <p class="mt-3 text-zinc-600 dark:text-zinc-300 text-sm line-clamp-2 leading-relaxed">${feat.excerpt || ''}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHomeThoughts() {
+      const list = document.getElementById('homeThoughtsList');
+      if (!list) return;
+      const items = state.thoughts.slice(0, 3);
+      if (items.length === 0) { list.innerHTML = `<p class="text-xs text-zinc-400">لا توجد خواطر بعد.</p>`; return; }
+      list.innerHTML = items.map(th => `
+        <div class="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-700/60 text-xs">
+          <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed font-normal">"${th.text}"</p>
+          <span class="block text-[10px] text-zinc-400 mt-2">${th.date}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderArticlesGrid() {
+      const grid = document.getElementById('articlesGrid');
+      if (!grid) return;
+      grid.innerHTML = state.articles.slice(1).map(art => makeArticleCard(art)).join('');
+    }
+    function renderAllArticlesList() {
+      const list = document.getElementById('allArticlesList');
+      if (!list) return;
+      list.innerHTML = state.articles.map(art => makeArticleCard(art)).join('');
+    }
+    function makeArticleCard(art) {
+      return `
+        <article onclick="openArticleModal('${art.id}')" class="cursor-pointer group bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div class="h-48 overflow-hidden">
+            <img src="${art.cover || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=800&q=80'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+          </div>
+          <div class="p-6">
+            <span class="inline-block px-2.5 py-1 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 mb-2">${art.category || 'مقال'}</span>
+            <h3 class="font-bold text-lg text-zinc-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">${art.title}</h3>
+            <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">${art.excerpt || ''}</p>
+          </div>
+          <div class="p-6 pt-0 text-xs text-amber-600 font-semibold">اقرأ المزيد &larr;</div>
+        </article>
+      `;
+    }
+
+    function renderThoughtsTimeline() {
+      const c = document.getElementById('thoughtsTimeline');
+      if (!c) return;
+      c.innerHTML = state.thoughts.map(th => `
+        <div class="bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+          <p class="text-base sm:text-lg text-zinc-800 dark:text-zinc-100 leading-relaxed">${th.text}</p>
+          <div class="text-xs text-zinc-400 pt-3 border-t border-zinc-100 dark:border-zinc-700/60">${th.date}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderVideos() {
+      const grid = document.getElementById('videosGrid');
+      if (!grid) return;
+      grid.innerHTML = state.videos.map(vd => `
+        <div class="bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-3xl overflow-hidden shadow-sm">
+          <div class="aspect-video bg-black">
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/${vd.videoId}" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="p-6">
+            <h3 class="font-bold text-base text-zinc-900 dark:text-white">${vd.title}</h3>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openArticleModal(id) {
+      const art = state.articles.find(a => a.id === id);
+      if (!art) return;
+      state.currentArticleId = id;
+      document.getElementById('modalTitle').textContent = art.title;
+      document.getElementById('modalCategory').textContent = art.category || 'مقال';
+      document.getElementById('modalDate').textContent = art.date || '';
+      document.getElementById('modalReadTime').textContent = art.readTime || '5 دقائق قراءة';
+      document.getElementById('modalContent').innerHTML = art.content || `<p>${art.excerpt || ''}</p>`;
+      const cover = document.getElementById('modalCover');
+      if (art.cover) { cover.src = art.cover; cover.classList.remove('hidden'); } else { cover.classList.add('hidden'); }
+      document.getElementById('articleModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      updateReadingProgress();
+    }
+    function closeArticleModal() {
+      document.getElementById('articleModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      state.currentArticleId = null;
+      document.getElementById('readingProgressBar').style.transform = 'scaleX(0)';
+    }
+
+    function openAdminModal() {
+      if (state.adminToken) openAdminStudio();
+      else document.getElementById('adminLoginModal').classList.remove('hidden');
+    }
+    function closeAdminLoginModal() {
+      document.getElementById('adminLoginModal').classList.add('hidden');
+    }
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const pw = document.getElementById('adminPasswordInput').value;
+      if (pw === 'admin123') {
+        state.adminToken = 'session_auth_token_secret';
+        closeAdminLoginModal();
+        openAdminStudio();
+      } else {
+        document.getElementById('loginError').classList.remove('hidden');
+      }
+    }
+    function openAdminStudio() {
+      document.getElementById('adminStudio').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      renderAdminContentList();
+    }
+    function closeAdminStudio() {
+      document.getElementById('adminStudio').classList.add('hidden');
+      document.body.style.overflow = '';
+      renderAll();
+    }
+
+    function setEditorType(type) {
+      ['article', 'library', 'thought', 'video'].forEach(t => {
+        const cap = t.charAt(0).toUpperCase() + t.slice(1);
+        document.getElementById(`editor${cap}Section`).classList.add('hidden');
+        document.getElementById(`btnType${cap}`).className = "px-5 py-2.5 rounded-xl font-bold text-sm text-zinc-600 dark:text-zinc-300";
+      });
+      const cap = type.charAt(0).toUpperCase() + type.slice(1);
+      document.getElementById(`editor${cap}Section`).classList.remove('hidden');
+      document.getElementById(`btnType${cap}`).className = "px-5 py-2.5 rounded-xl font-bold text-sm bg-white dark:bg-zinc-700 shadow text-amber-600 dark:text-amber-400";
+    }
+
+    async function submitArticle() {
+      const title = document.getElementById('articleTitleInput').value.trim();
+      const category = document.getElementById('articleCategoryInput').value.trim() || 'عام';
+      const excerpt = document.getElementById('articleExcerptInput').value.trim();
+      const content = document.getElementById('articleContentEditor').innerHTML;
+      const fileInput = document.getElementById('coverFileInput');
+      let cover = document.getElementById('coverUrlInput').value.trim();
+
+      if (!title || !content || content === '<br>') return alert('يرجى ملء عنوان المقال ومحتواه');
+
+      // Upload local cover if chosen
+      if (fileInput && fileInput.files.length > 0) {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        try {
+          const upRes = await fetch('/api/upload', { method: 'POST', body: formData });
+          if (upRes.ok) {
+            const upData = await upRes.json();
+            cover = upData.url;
+          }
+        } catch (e) {}
+      }
+
+      const newArticle = {
+        id: 'post_' + Date.now(),
+        title,
+        category,
+        excerpt,
+        content,
+        cover,
+        readTime: Math.max(3, Math.ceil(content.split(' ').length / 100)) + ' دقائق',
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      try {
+        const res = await fetch('/api/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'article', data: newArticle, token: state.adminToken || 'session_auth_token_secret' })
+        });
+        if (res.ok) state.articles.unshift(newArticle);
+        else { state.articles.unshift(newArticle); localStorage.setItem('blog_articles', JSON.stringify(state.articles)); }
+      } catch (e) {
+        state.articles.unshift(newArticle);
+        localStorage.setItem('blog_articles', JSON.stringify(state.articles));
+      }
+
+      localStorage.removeItem('blog_article_draft');
+      alert('تم نشر المقال بنجاح!');
+      document.getElementById('articleTitleInput').value = '';
+      document.getElementById('articleCategoryInput').value = '';
+      document.getElementById('articleExcerptInput').value = '';
+      document.getElementById('articleContentEditor').innerHTML = '';
+      if (document.getElementById('coverUrlInput')) document.getElementById('coverUrlInput').value = '';
+      if (fileInput) fileInput.value = '';
+      renderAdminContentList();
+      renderAll();
+    }
+
+    async function submitLibraryBook() {
+      const title = document.getElementById('libTitleInput').value.trim();
+      const author = document.getElementById('libAuthorInput').value.trim() || 'م/ محمد بن عبدالحكيم الغبان';
+      const category = document.getElementById('libCategoryInput').value.trim() || 'عام';
+      const sizeInput = document.getElementById('libSizeInput').value.trim() || 'PDF';
+      const desc = document.getElementById('libDescInput').value.trim();
+      const docFile = document.getElementById('libDocFileInput');
+      const coverFile = document.getElementById('libCoverFileInput');
+      let fileUrl = document.getElementById('libDocUrlInput').value.trim();
+      let coverUrl = document.getElementById('libCoverUrlInput').value.trim();
+
+      if (!title) return alert('يرجى إدخال عنوان الوثيقة أو الكتاب');
+
+      if (docFile.files.length > 0 || coverFile.files.length > 0) {
+        const formData = new FormData();
+        if (docFile.files.length > 0) formData.append('docFile', docFile.files[0]);
+        if (coverFile.files.length > 0) formData.append('coverFile', coverFile.files[0]);
+        try {
+          const upRes = await fetch('/api/upload-book', { method: 'POST', body: formData });
+          if (upRes.ok) {
+            const upData = await upRes.json();
+            if (upData.docUrl) fileUrl = upData.docUrl;
+            if (upData.coverUrl) coverUrl = upData.coverUrl;
+          }
+        } catch (e) {}
+      }
+
+      if (!fileUrl) fileUrl = "/uploads/sample.pdf";
+
+      const newBook = {
+        id: 'book_' + Date.now(),
+        title,
+        author,
+        category,
+        fileType: 'PDF',
+        fileSize: sizeInput,
+        fileUrl,
+        coverUrl,
+        description: desc,
+        readsCount: 0,
+        downloadsCount: 0,
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      try {
+        const res = await fetch('/api/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'library', data: newBook, token: state.adminToken || 'session_auth_token_secret' })
+        });
+        if (res.ok) state.library.unshift(newBook);
+        else { state.library.unshift(newBook); localStorage.setItem('blog_library', JSON.stringify(state.library)); }
+      } catch (e) {
+        state.library.unshift(newBook);
+        localStorage.setItem('blog_library', JSON.stringify(state.library));
+      }
+
+      alert('تمت إضافة الكتاب بنجاح!');
+      document.getElementById('libTitleInput').value = '';
+      document.getElementById('libAuthorInput').value = '';
+      document.getElementById('libCategoryInput').value = '';
+      document.getElementById('libSizeInput').value = '';
+      document.getElementById('libDescInput').value = '';
+      document.getElementById('libDocUrlInput').value = '';
+      document.getElementById('libCoverUrlInput').value = '';
+      docFile.value = '';
+      coverFile.value = '';
+
+      renderLibraryCategoryPills();
+      renderLibraryView();
+      renderHomeLibrary();
+      renderAdminContentList();
+    }
+
+    function renderAdminContentList() {
+      const list = document.getElementById('adminContentList');
+      if (!list) return;
+
+      const items = [
+        ...state.articles.map(a => ({ type: 'article', id: a.id, title: a.title, sub: a.date })),
+        ...state.library.map(l => ({ type: 'library', id: l.id, title: '📚 ' + l.title, sub: `قراءات: ${l.readsCount || 0} • تحميلات: ${l.downloadsCount || 0}` })),
+        ...state.thoughts.map(t => ({ type: 'thought', id: t.id, title: t.text.slice(0, 30) + '...', sub: t.date })),
+        ...state.videos.map(v => ({ type: 'video', id: v.id, title: v.title, sub: v.date }))
+      ];
+
+      if (items.length === 0) { list.innerHTML = `<p class="text-xs text-zinc-400">لا توجد عناصر.</p>`; return; }
+      list.innerHTML = items.map(item => `
+        <div class="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs">
+          <div>
+            <span class="font-bold text-zinc-900 dark:text-white">${item.title}</span>
+            <span class="text-zinc-400 mr-2">(${item.type}) • ${item.sub}</span>
+          </div>
+          <button onclick="deleteContentItem('${item.type}', '${item.id}')" class="text-rose-500 font-semibold px-2 py-1 rounded hover:bg-rose-50">حذف</button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteContentItem(type, id) {
+      if (!confirm('هل أنت متأكد من الحذف؟')) return;
+      try {
+        await fetch('/api/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type, id, token: state.adminToken || 'session_auth_token_secret' })
+        });
+      } catch (e) {}
+
+      if (type === 'library') {
+        state.library = state.library.filter(x => x.id !== id);
+        localStorage.setItem('blog_library', JSON.stringify(state.library));
+      } else if (type === 'article') {
+        state.articles = state.articles.filter(x => x.id !== id);
+        localStorage.setItem('blog_articles', JSON.stringify(state.articles));
+      }
+      renderAdminContentList();
+      renderAll();
+    }
+
+    function handleSearch(q) {
+      const term = q.toLowerCase().trim();
+      if (!term) { renderLibraryView(); renderArticlesGrid(); return; }
+      const filteredLib = state.library.filter(b => b.title.toLowerCase().includes(term) || (b.author && b.author.toLowerCase().includes(term)));
+      const libCards = document.getElementById('libraryCardsContainer');
+      if (libCards) {
+        libCards.innerHTML = filteredLib.map(b => `<div class="p-4 bg-white dark:bg-zinc-800 rounded-2xl border font-bold">${b.title}</div>`).join('');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+    });
+  </script>
+</body>
+</html>
